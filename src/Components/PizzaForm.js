@@ -3,9 +3,15 @@ import axios from "axios";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-    Name: yup.string().required("Your name is required."),
+    Name: yup.string().min(2).required("Your name is required."),
     Size: yup.string().required("You must select a pizza size."),
-    Crust: yup.string().required("You must select a pizza crust ")
+    Crust: yup.string().required("You must select a pizza crust "),
+    pepperoni: yup.boolean().oneOf([true], ""),
+    sausage: yup.boolean().oneOf([true], ""),
+    pineapple: yup.boolean().oneOf([true], ""),
+    bacon: yup.boolean().oneOf([true], ""),
+    onion:yup.boolean().oneOf([true], ""),
+    Message:yup.string()
   });
 
 export default function PizzaForm() {
@@ -13,7 +19,6 @@ export default function PizzaForm() {
         Name: "",
         Size: "",
         Crust: "",
-        Toppings: "",
         pepperoni: "",
         sausage: "",
         pineapple: "",
@@ -21,13 +26,30 @@ export default function PizzaForm() {
         onion:"",
         Message:""
     })
-    const [error, setErrorState] = useState({
-        Name: "",
-        Size: "",
-        Crust: ""
+    const [error, setError] = useState({
+        Name: ""
     })
+
     const [order, setOrder] = useState([])
-    const validation = e => { }
+
+    const Validation = e => {
+
+        yup
+          .reach(schema, e.target.name)
+          .validate(e.target.value)
+          .then(valid => {
+            setError({
+              ...error,
+              [e.target.name]: ""
+            });
+          })
+          .catch(err => {
+            setError({
+              ...error,
+              [e.target.name]: err.errors[0]
+            });
+          });
+      };
 
     const handleChange = e => {
         e.persist();
@@ -36,7 +58,7 @@ export default function PizzaForm() {
             [e.target.name]:
             e.target.type === "checkbox" ? e.target.checked : e.target.value
         };
-
+        Validation(e);
         setFormState(newData);
     }
 
@@ -72,6 +94,7 @@ export default function PizzaForm() {
                     name="Name"
                     onChange={handleChange}
                 />
+            {error.Name.length > 0 ? <p>{error.Name}</p> : null}
             </label>
 
             <label htmlFor="Size">
@@ -81,7 +104,8 @@ export default function PizzaForm() {
                     <option value="medium">Medium</option>
                     <option value="large">Large</option>
                     <option value="xlarge">X-Large</option>
-                 </select>
+                </select>
+
             </label>
 
             <label htmlFor="Crust">
@@ -101,8 +125,8 @@ export default function PizzaForm() {
                         type="checkbox"
                         name="pepperoni"
                         onChange={handleChange}
-                        value={formState.Toppings.pepperoni}
-                        checked={formState.Toppings.pepperoni} />
+                        value={formState.pepperoni}
+                        checked={formState.pepperoni} />
 
                 </label>
                 <label htmlFor="sausage">
@@ -111,8 +135,8 @@ export default function PizzaForm() {
                         type="checkbox"
                         name="sausage"
                         onChange={handleChange}
-                        value={formState.Toppings.sausage}
-                        checked={formState.Toppings.sausage} />
+                        value={formState.sausage}
+                        checked={formState.sausage} />
 
                 </label>
                 <label htmlFor="pineapple">
@@ -121,8 +145,8 @@ export default function PizzaForm() {
                         type="checkbox"
                         name="pineapple"
                         onChange={handleChange}
-                        value={formState.Toppings.pineapple}
-                        checked={formState.Toppings.pineapple} />
+                        value={formState.pineapple}
+                        checked={formState.pineapple} />
 
                 </label>
                 <label htmlFor="bacon">
@@ -131,8 +155,8 @@ export default function PizzaForm() {
                         type="checkbox"
                         name="bacon"
                         onChange={handleChange}
-                        value={formState.Toppings.bacon}
-                        checked={formState.Toppings.bacon} />
+                        value={formState.bacon}
+                        checked={formState.bacon} />
 
                 </label>
             </div>
