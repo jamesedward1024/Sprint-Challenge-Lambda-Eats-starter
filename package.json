@@ -34,6 +34,8 @@
     ]
   },
   "devDependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "cypress": "^4.5.0",
+    "react-input-switch": "^2.2.1"
   }
 }

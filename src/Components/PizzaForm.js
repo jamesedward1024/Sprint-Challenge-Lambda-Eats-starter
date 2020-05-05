@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Switch from 'react-input-switch';
 import axios from "axios";
 import * as yup from "yup";
 
@@ -15,15 +16,16 @@ const schema = yup.object().shape({
   });
 
 export default function PizzaForm() {
+
     const [formState, setFormState] = useState({
         Name: "",
         Size: "",
         Crust: "",
-        pepperoni: "",
-        sausage: "",
-        pineapple: "",
-        bacon: "",
-        onion:"",
+        pepperoni: false,
+        sausage: false,
+        pineapple: false,
+        bacon: false,
+        onion: false,
         Message:""
     })
     const [error, setError] = useState({
@@ -52,7 +54,7 @@ export default function PizzaForm() {
       };
 
     const handleChange = e => {
-        e.persist();
+        e.persist()
         const newData = {
             ...formState,
             [e.target.name]:
@@ -73,7 +75,6 @@ export default function PizzaForm() {
                     Name: "",
                     Size: "",
                     Crust: "",
-                    Toppings: "",
                     pepperoni: "",
                     sausage: "",
                     pineapple: "",
@@ -84,11 +85,13 @@ export default function PizzaForm() {
             })
             .catch(error => console.log(error));
     }
+
     return (
         <form onSubmit={handleSubmit}>
             <label htmlFor="Name">
                 Name:
                 <input
+                    id="nameInput"
                     type="text"
                     value={formState.Name}
                     name="Name"
@@ -161,7 +164,7 @@ export default function PizzaForm() {
                 </label>
             </div>
 
-            <label htmlFor="Message">
+            <label htmlFor="Message" className="textInput">
                 Special Instructions:
                 <input
                     type="textArea"
