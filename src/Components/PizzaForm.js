@@ -117,7 +117,7 @@ export default function PizzaForm() {
                  </select>
             </label>
 
-            <div>
+            <div className="toppingOptions">
                 Select Toppings:
                 <label htmlFor="pepperoni">
                     Pepperoni
@@ -162,6 +162,7 @@ export default function PizzaForm() {
             </div>
 
             <label htmlFor="Message">
+                Special Instructions:
                 <input
                     type="textArea"
                     value={formState.Message}
